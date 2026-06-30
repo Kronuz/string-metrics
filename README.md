@@ -1,4 +1,4 @@
-# string-metrics
+# string-similarity
 
 A small, header-only C++20 suite of string-similarity metrics: edit distance,
 Jaro and Jaro-Winkler, longest common substring and subsequence, Jaccard,
@@ -55,13 +55,13 @@ With CMake `FetchContent`:
 ```cmake
 include(FetchContent)
 FetchContent_Declare(
-  string_metrics
-  GIT_REPOSITORY https://github.com/Kronuz/string-metrics.git
+  string_similarity
+  GIT_REPOSITORY https://github.com/Kronuz/string-similarity.git
   GIT_TAG        main
 )
-FetchContent_MakeAvailable(string_metrics)
+FetchContent_MakeAvailable(string_similarity)
 
-target_link_libraries(your_target PRIVATE string_metrics::string_metrics)
+target_link_libraries(your_target PRIVATE string_similarity::string_similarity)
 ```
 
 The target requests `cxx_std_20` and links `strings` and `phonetic` `INTERFACE`,
@@ -116,7 +116,7 @@ The first configure fetches `strings` and `phonetic` over the network
 Levenshtein("kitten","sitting") recovers the classic edit distance 3, Jaro of
 MARTHA/MARHTA is ~0.944, the LCS metrics, Jaccard, and Sørensen-Dice hit their
 hand-computed fractions, and English Soundex collapses Robert/Rupert to one code.
-It prints `all string-metrics tests passed` and exits 0.
+It prints `all string-similarity tests passed` and exits 0.
 
 ## Examples
 
@@ -124,7 +124,7 @@ It prints `all string-metrics tests passed` and exits 0.
 produces it next to the test:
 
 ```sh
-cmake -B build && cmake --build build && ./build/string_metrics_demo
+cmake -B build && cmake --build build && ./build/string_similarity_demo
 ```
 
 It prints every metric's similarity for a handful of word pairs.

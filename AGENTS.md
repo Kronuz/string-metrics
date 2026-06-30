@@ -19,7 +19,7 @@ sorensen_dice.h              Sørensen-Dice over character bigrams.
 soundex_metric.h             SoundexMetric<Encoder, Metric>: encode phonetically, score the codes.
 test/test.cc                 Runnable smoke test: asserts known values for every metric.
 examples/demo.cc             A runnable tour (not a test).
-CMakeLists.txt               INTERFACE library `string_metrics` (+ alias); FetchContent strings + phonetic; CTest test `string_metrics`.
+CMakeLists.txt               INTERFACE library `string_similarity` (+ alias); FetchContent strings + phonetic; CTest test `string_similarity`.
 LICENSE                      MIT, Copyright (c) 2015-2019 Dubalu LLC.
 README.md                    What it is, install, usage.
 ARCHITECTURE.md              The CRTP base, what each metric computes, the dispatch subtlety.
@@ -37,8 +37,8 @@ cmake -B build && cmake --build build && ctest --test-dir build
 
 The first configure fetches `strings` and `phonetic` over the network
 (FetchContent, `GIT_TAG main`). Expected output ends with
-`all string-metrics tests passed`, exit 0. The test target is
-`string_metrics_test`; the registered CTest name is `string_metrics`. The test and
+`all string-similarity tests passed`, exit 0. The test target is
+`string_similarity_test`; the registered CTest name is `string_similarity`. The test and
 demo are only added when this repo is the top-level project (CMakeLists.txt), so
 consumers vendoring it via `FetchContent` won't build them.
 
@@ -65,8 +65,8 @@ track both at `GIT_TAG main`, like the rest of the family.
   sibling libraries. Don't drop below it.
 - **Filenames are stable.** The headers keep their original Xapiand names so a
   consumer that already `#include`s them just needs this repo on the include path.
-  Don't rename them. (The repo is `string-metrics`; the CMake target/alias use the
-  underscore form `string_metrics` because `-` is not valid in a CMake target.)
+  Don't rename them. (The repo is `string-similarity`; the CMake target/alias use the
+  underscore form `string_similarity` because `-` is not valid in a CMake target.)
 - Tabs for indentation, double quotes in code, no em dashes in prose.
 - MIT-licensed; keep the copyright header (Copyright (c) 2015-2019 Dubalu LLC) on
   source files.

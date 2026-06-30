@@ -1,6 +1,6 @@
 # Architecture
 
-The internals of `string-metrics`: how one CRTP base gives every metric a shared
+The internals of `string-similarity`: how one CRTP base gives every metric a shared
 surface, what each metric computes, and the one subtlety in how the base
 dispatches to subclasses. For usage see `README.md`; for the repo map and
 invariants see `AGENTS.md`.

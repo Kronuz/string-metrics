@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.14)
-project(string_metrics LANGUAGES CXX)
+project(string_similarity LANGUAGES CXX)
 
 include(FetchContent)
 
@@ -32,33 +32,33 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(strings soundex)
 
 # --- Library target ---
-# string-metrics is header-only: the metrics are a CRTP base (StringMetric<Impl>)
+# string-similarity is header-only: the metrics are a CRTP base (StringMetric<Impl>)
 # plus per-algorithm subclasses, all templates / inline in headers. So the target
 # is a pure INTERFACE library that just puts the source dir on the consumer's
 # include path.
-add_library(string_metrics INTERFACE)
-target_include_directories(string_metrics INTERFACE "${CMAKE_CURRENT_SOURCE_DIR}")
-target_compile_features(string_metrics INTERFACE cxx_std_20)
+add_library(string_similarity INTERFACE)
+target_include_directories(string_similarity INTERFACE "${CMAKE_CURRENT_SOURCE_DIR}")
+target_compile_features(string_similarity INTERFACE cxx_std_20)
 
 # Link strings and soundex INTERFACE so "strings.hh" and the soundex headers
 # ride onto the consumer's include path: both are part of the public surface
 # (basic_string_metric.h includes strings.hh; a consumer of soundex_metric.h
 # instantiates it with a soundex encoder), so a consumer needs them resolvable.
-target_link_libraries(string_metrics INTERFACE strings::strings soundex::soundex)
+target_link_libraries(string_similarity INTERFACE strings::strings soundex::soundex)
 
-# Alias so consumers can link `string_metrics::string_metrics` whether they add
+# Alias so consumers can link `string_similarity::string_similarity` whether they add
 # this via add_subdirectory or FetchContent.
-add_library(string_metrics::string_metrics ALIAS string_metrics)
+add_library(string_similarity::string_similarity ALIAS string_similarity)
 
 # Only build the test and demo when this repo is the top-level project, so
 # consumers (e.g. via FetchContent) don't build them.
 if(CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
   enable_testing()
-  add_executable(string_metrics_test test/test.cc)
-  target_link_libraries(string_metrics_test PRIVATE string_metrics)
-  add_test(NAME string_metrics COMMAND string_metrics_test)
+  add_executable(string_similarity_test test/test.cc)
+  target_link_libraries(string_similarity_test PRIVATE string_similarity)
+  add_test(NAME string_similarity COMMAND string_similarity_test)
 
-  # A runnable tour of the library (not a test): build & run ./build/string_metrics_demo
-  add_executable(string_metrics_demo examples/demo.cc)
-  target_link_libraries(string_metrics_demo PRIVATE string_metrics)
+  # A runnable tour of the library (not a test): build & run ./build/string_similarity_demo
+  add_executable(string_similarity_demo examples/demo.cc)
+  target_link_libraries(string_similarity_demo PRIVATE string_similarity)
 endif()
