@@ -7,7 +7,7 @@ include(FetchContent)
 # basic_string_metric.h includes "strings.hh" for strings::upper (its
 # case-folding step). It lives in the sibling strings library, pulled in here so
 # the include resolves. We track its tip with GIT_TAG main, like the rest of the
-# family. We declare it before phonetic so this declaration wins: phonetic also
+# family. We declare it before soundex so this declaration wins: soundex also
 # FetchContent_Declare's strings, and FetchContent dedups by the declared name,
 # keeping the first declaration.
 FetchContent_Declare(
@@ -16,20 +16,20 @@ FetchContent_Declare(
   GIT_TAG        main
 )
 
-# --- Dependency: phonetic ---
+# --- Dependency: soundex ---
 # soundex_metric.h is a Soundex-backed metric: it encodes both inputs with a
-# phonetic encoder, then defers to an inner string metric. The concrete encoders
-# (SoundexEnglish in "english_soundex.h", etc.) live in the sibling phonetic
+# soundex encoder, then defers to an inner string metric. The concrete encoders
+# (SoundexEnglish in "english_soundex.h", etc.) live in the sibling soundex
 # library, pulled in here so those includes resolve for consumers (and our test /
-# demo). phonetic itself depends on strings; declaring strings above makes that
+# demo). soundex itself depends on strings; declaring strings above makes that
 # transitive dependency resolve to one copy.
 FetchContent_Declare(
-  phonetic
-  GIT_REPOSITORY https://github.com/Kronuz/phonetic.git
+  soundex
+  GIT_REPOSITORY https://github.com/Kronuz/soundex.git
   GIT_TAG        main
 )
 
-FetchContent_MakeAvailable(strings phonetic)
+FetchContent_MakeAvailable(strings soundex)
 
 # --- Library target ---
 # string-metrics is header-only: the metrics are a CRTP base (StringMetric<Impl>)
@@ -40,11 +40,11 @@ add_library(string_metrics INTERFACE)
 target_include_directories(string_metrics INTERFACE "${CMAKE_CURRENT_SOURCE_DIR}")
 target_compile_features(string_metrics INTERFACE cxx_std_20)
 
-# Link strings and phonetic INTERFACE so "strings.hh" and the soundex headers
+# Link strings and soundex INTERFACE so "strings.hh" and the soundex headers
 # ride onto the consumer's include path: both are part of the public surface
 # (basic_string_metric.h includes strings.hh; a consumer of soundex_metric.h
-# instantiates it with a phonetic encoder), so a consumer needs them resolvable.
-target_link_libraries(string_metrics INTERFACE strings::strings phonetic::phonetic)
+# instantiates it with a soundex encoder), so a consumer needs them resolvable.
+target_link_libraries(string_metrics INTERFACE strings::strings soundex::soundex)
 
 # Alias so consumers can link `string_metrics::string_metrics` whether they add
 # this via add_subdirectory or FetchContent.
