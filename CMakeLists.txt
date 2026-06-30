@@ -17,7 +17,7 @@ FetchContent_Declare(
 )
 
 # --- Dependency: soundex ---
-# soundex_metric.h is a Soundex-backed metric: it encodes both inputs with a
+# phonetic_metric.h is a Soundex-backed metric: it encodes both inputs with a
 # soundex encoder, then defers to an inner string metric. The concrete encoders
 # (SoundexEnglish in "english_soundex.h", etc.) live in the sibling soundex
 # library, pulled in here so those includes resolve for consumers (and our test /
@@ -42,7 +42,7 @@ target_compile_features(string_similarity INTERFACE cxx_std_20)
 
 # Link strings and soundex INTERFACE so "strings.hh" and the soundex headers
 # ride onto the consumer's include path: both are part of the public surface
-# (basic_string_metric.h includes strings.hh; a consumer of soundex_metric.h
+# (basic_string_metric.h includes strings.hh; a consumer of phonetic_metric.h
 # instantiates it with a soundex encoder), so a consumer needs them resolvable.
 target_link_libraries(string_similarity INTERFACE strings::strings soundex::soundex)
 

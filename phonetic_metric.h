@@ -37,10 +37,14 @@
  *
  * Phonetic-based metric.
  */
-template <typename SoundexLan, typename Metric>
-class SoundexMetric : public Metric {
-	SoundexLan _soundex;
+template <typename Encoder, typename Metric>
+class PhoneticMetric : public Metric {
+protected:
+	// protected (not private) so a consumer can subclass to re-add the
+	// serialise()/unserialise() persistence this library deliberately omits.
+	Encoder _soundex;
 
+private:
 	double _distance(std::string_view str1, std::string_view str2) const {
 		return Metric::distance(_soundex.encode(str1), _soundex.encode(str2));
 	}
@@ -58,7 +62,7 @@ class SoundexMetric : public Metric {
 	}
 
 	std::string _description() const {
-		std::string desc("SoundexMetric<");
+		std::string desc("PhoneticMetric<");
 		desc.append(_soundex.description()).append(", ").append(Metric::description());
 		desc.push_back('>');
 		return desc;
@@ -70,11 +74,11 @@ public:
 	 * Soundex is icase, therefore the parameter is not necessary.
 	 * Always icase=false to optimize.
 	 */
-	SoundexMetric(bool = false)
+	PhoneticMetric(bool = false)
 		: Metric(false) { }
 
 	template <typename T>
-	SoundexMetric(T&& str, bool = false) :
+	PhoneticMetric(T&& str, bool = false) :
 		Metric(false),
 		_soundex(str) {
 		this->_str = _soundex.encode();

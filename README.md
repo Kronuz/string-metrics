@@ -33,8 +33,8 @@ The metrics:
   common (not necessarily contiguous) subsequence, over the longer length.
 - **Jaccard** — over the two strings' character sets.
 - **Sorensen_Dice** — over their character bigrams.
-- **SoundexMetric<Encoder, Metric>** — encodes both inputs with a phonetic
-  encoder (from the [phonetic](https://github.com/Kronuz/phonetic) library), then
+- **PhoneticMetric<Encoder, Metric>** — encodes both inputs with a phonetic
+  encoder (from the [soundex](https://github.com/Kronuz/soundex) library), then
   runs the inner metric over the codes, so homophones score as similar.
 
 It is header-only: the metrics are templates and inline methods, so there is
@@ -46,7 +46,7 @@ Two dependencies, both siblings in the same family and both pulled in by CMake:
 
 - [strings](https://github.com/Kronuz/strings) — `basic_string_metric.h` uses
   `strings::upper` for case folding.
-- [phonetic](https://github.com/Kronuz/phonetic) — `soundex_metric.h` is
+- [soundex](https://github.com/Kronuz/soundex) — `phonetic_metric.h` is
   parameterized over a phonetic encoder (e.g. `SoundexEnglish` from
   `english_soundex.h`).
 
@@ -70,7 +70,7 @@ extra wiring. Then:
 
 ```cpp
 #include "levenshtein.h"
-#include "soundex_metric.h"
+#include "phonetic_metric.h"
 #include "english_soundex.h"   // a concrete encoder, from the phonetic library
 ```
 
@@ -83,7 +83,7 @@ The headers keep their original filenames, so a codebase that already
 #include "jaro_winkler.h"
 #include "jaccard.h"
 #include "sorensen_dice.h"
-#include "soundex_metric.h"
+#include "phonetic_metric.h"
 #include "english_soundex.h"
 
 Jaro jaro;
@@ -96,7 +96,7 @@ Sorensen_Dice sd;
 sd.similarity("night", "nacht");                   // 0.25, over char bigrams
 
 // Phonetic: encode with English Soundex, score the codes with Levenshtein.
-SoundexMetric<SoundexEnglish, Levenshtein> phon("Robert");
+PhoneticMetric<SoundexEnglish, Levenshtein> phon("Robert");
 phon.similarity("Rupert");                          // homophones share a code
 ```
 

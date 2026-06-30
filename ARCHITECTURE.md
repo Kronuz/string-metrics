@@ -17,7 +17,7 @@ A base header plus one header per metric:
   lcsubsequence.h         longest common subsequence
   jaccard.h               Jaccard index over character sets
   sorensen_dice.h         Sørensen-Dice over character bigrams
-  soundex_metric.h        SoundexMetric<Encoder, Metric>: phonetic wrapper
+  phonetic_metric.h        PhoneticMetric<Encoder, Metric>: phonetic wrapper
 ```
 
 Everything is templates and inline methods, so there is no compiled translation
@@ -58,7 +58,7 @@ plus their one-argument forms, and `_name` / `_description`.
   intersection with the `Counter` helper, a minimal output-iterator sink for
   `std::set_intersection` that just tallies `push_back` calls instead of
   materializing the intersection.
-- **SoundexMetric<Encoder, Metric>** derives from the inner `Metric` and holds a
+- **PhoneticMetric<Encoder, Metric>** derives from the inner `Metric` and holds a
   phonetic `Encoder`. Its `_distance` / `_similarity` encode both operands and
   defer to the inner metric over the codes; its constructor stores the encoded
   form as the bound `_str`. `name()` reports the encoder's name.
@@ -70,8 +70,8 @@ The CRTP `Impl` is fixed at the layer that names `StringMetric<...>`. `Jaro` is
 `Jaro_Winkler` the base still casts to `const Jaro*` and calls
 `Jaro::_similarity` — the public two-argument `similarity()` does *not* reach
 `Jaro_Winkler::_similarity`, so the prefix boost is not applied through that path.
-The same holds for `SoundexMetric`, whose `Impl` is the inner `Metric`, not
-`SoundexMetric`: the public two-argument call runs the inner metric on the raw
+The same holds for `PhoneticMetric`, whose `Impl` is the inner `Metric`, not
+`PhoneticMetric`: the public two-argument call runs the inner metric on the raw
 strings, and the phonetic encoding is exercised through the bound-string
 constructor path. This is upstream Xapiand behavior, preserved verbatim. The test
 asserts the values the public API actually returns and verifies the phonetic

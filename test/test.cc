@@ -32,7 +32,7 @@
 #include "lcsubsequence.h"
 #include "jaccard.h"
 #include "sorensen_dice.h"
-#include "soundex_metric.h"
+#include "phonetic_metric.h"
 
 #include "english_soundex.h"
 
@@ -139,7 +139,7 @@ int main() {
 	}
 
 	// --- Soundex-backed metric --------------------------------------------
-	// SoundexMetric<Encoder, Metric> encodes its inputs phonetically, then runs
+	// PhoneticMetric<Encoder, Metric> encodes its inputs phonetically, then runs
 	// the inner string metric over the codes, so homophones (which collapse to
 	// the same Soundex code) score as more similar than words that merely look
 	// alike but sound different. Construct it from one word: the constructor
@@ -147,7 +147,7 @@ int main() {
 	// stored code against the encoded comparand. "Robert" and "Rupert" are
 	// Soundex homophones; "Robert" and "Rubin" are not.
 	{
-		using SoundexLevenshtein = SoundexMetric<SoundexEnglish, Levenshtein>;
+		using SoundexLevenshtein = PhoneticMetric<SoundexEnglish, Levenshtein>;
 		SoundexEnglish enc;
 
 		// The encoder collapses the homophones to identical codes.
@@ -166,7 +166,7 @@ int main() {
 		close_to(homophones, 1.0, 1e-9, "Soundex homophones Robert/Rupert similarity 1");
 		assert(homophones > nonhomophones); ++checks;
 
-		// And the SoundexMetric type instantiates and stores the encoded form.
+		// And the PhoneticMetric type instantiates and stores the encoded form.
 		SoundexLevenshtein metric(std::string("Robert"));
 		assert(metric.name() == enc.name()); ++checks;
 	}

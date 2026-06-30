@@ -37,10 +37,14 @@
  * Character-based metric.
  */
 class Levenshtein : public StringMetric<Levenshtein> {
+protected:
+	// protected (not private) so a consumer can subclass to re-add the
+	// serialise()/unserialise() persistence this library deliberately omits.
 	size_t _subst_cost;
 	size_t _ins_del_cost;
 	size_t _maxCost;
 
+private:
 	friend class StringMetric<Levenshtein>;
 
 	double _distance(std::string_view str1, std::string_view str2) const {

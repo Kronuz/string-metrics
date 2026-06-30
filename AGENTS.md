@@ -16,7 +16,7 @@ lcsubstr.h                   Longest common substring.
 lcsubsequence.h              Longest common subsequence.
 jaccard.h                    Jaccard index over character sets.
 sorensen_dice.h              Sørensen-Dice over character bigrams.
-soundex_metric.h             SoundexMetric<Encoder, Metric>: encode phonetically, score the codes.
+phonetic_metric.h             PhoneticMetric<Encoder, Metric>: encode phonetically, score the codes.
 test/test.cc                 Runnable smoke test: asserts known values for every metric.
 examples/demo.cc             A runnable tour (not a test).
 CMakeLists.txt               INTERFACE library `string_similarity` (+ alias); FetchContent strings + phonetic; CTest test `string_similarity`.
@@ -49,7 +49,7 @@ Two siblings in the same family, both linked `INTERFACE`:
 - **[strings](https://github.com/Kronuz/strings)** — `basic_string_metric.h`
   includes `"strings.hh"` for `strings::upper` (the case-folding step). Part of
   the public surface, so it must ride onto the consumer's include path.
-- **[phonetic](https://github.com/Kronuz/phonetic)** — `soundex_metric.h` is a
+- **[soundex](https://github.com/Kronuz/soundex)** — `phonetic_metric.h` is a
   template over a phonetic encoder; the concrete encoders (`SoundexEnglish` in
   `english_soundex.h`, etc.) live there. Consumers of the soundex wrapper include
   one of those headers, so phonetic is linked `INTERFACE` too.
@@ -88,7 +88,7 @@ track both at `GIT_TAG main`, like the rest of the family.
   base can call its private kernels. Keep the friend declaration when adding a
   metric.
 - **The dispatch is fixed at the StringMetric<...> layer.** For `Jaro_Winkler`
-  and `SoundexMetric`, the base's CRTP `Impl` is the parent (`Jaro`, the inner
+  and `PhoneticMetric`, the base's CRTP `Impl` is the parent (`Jaro`, the inner
   `Metric`), so the public two-argument call reaches the parent's kernel, not the
   derived one. This is intentional, preserved-from-upstream behavior. Don't "fix"
   it by re-templating the base; tests assert the values the API actually returns.

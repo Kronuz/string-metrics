@@ -39,9 +39,13 @@
  * It is a variant of the Jaro distance metric.
  */
 class Jaro_Winkler : public Jaro {
+protected:
+	// protected (not private) so a consumer can subclass to re-add the
+	// serialise()/unserialise() persistence this library deliberately omits.
 	double _p;  // Scaling factor.
 	double _bt; // Boost threshold.
 
+private:
 	const size_t MAX_PREFIX_LEN{4};
 	const double MAX_P{0.25};
 	const double MAX_BT{1.0};

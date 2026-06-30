@@ -30,7 +30,7 @@
 #include "lcsubsequence.h"
 #include "jaccard.h"
 #include "sorensen_dice.h"
-#include "soundex_metric.h"
+#include "phonetic_metric.h"
 
 #include "english_soundex.h"
 
@@ -44,7 +44,7 @@ static void row(const char* a, const char* b) {
 	LCSubsequence lcseq;
 	Jaccard jac;
 	Sorensen_Dice sd;
-	SoundexMetric<SoundexEnglish, Levenshtein> sdx;
+	PhoneticMetric<SoundexEnglish, Levenshtein> sdx;
 
 	std::printf("%-9s %-9s  lev=%.3f  jaro=%.3f  jw=%.3f  lcsubstr=%.3f  "
 		"lcsubseq=%.3f  jaccard=%.3f  dice=%.3f  soundex=%.3f\n",
